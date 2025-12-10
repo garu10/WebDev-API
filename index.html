@@ -6,17 +6,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-  </style>
 </head>
 
 <body>
   <div class="container mb-4 bg-dark text-white p-4 rounded-5 text-center">
     <div class="row">
       <div class="col">
-        <div class="display-3">
+        <div class="display-3" id="main-title">
           Studio Ghibli
         </div>
       </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row text-center mb-4">
+        <div class="col" id="btn-ghibli">
+            <div class="btn-success" onclick="getEndpointfilter(21)">
+                GHIBLI
+            </div>
+        </div>
+        <div class="col" id="btn-mappa">
+            <div class="btn-warning" onclick="getEndpointfilter(569)">
+                MAPPA
+            </div>
+        </div>
+        <div class="col" id="btn-toei">
+            <div class="btn-secondary" onclick="getEndpointfilter(18)">
+                TOEI
+            </div>
+        </div>
     </div>
   </div>
 
@@ -29,14 +47,39 @@
   <script>
 
     var contents = document.getElementById("contents");
+    var mainTitle = document.getElementById("main-title");
+    const studioNames = {
+        '21': 'Studio Ghibli',
+        '569': 'MAPPA',
+        '18': 'Toei Animation'
+    };
 
-    const getGhibliWorks = async () => {
-      const response = await fetch('https://api.jikan.moe/v4/anime?producers=21');
+
+    const getEndpointfilter = async(id) => {
+      let endpoint;
+
+      if (id === 569) {
+          endpoint = `https://api.jikan.moe/v4/anime?producers=${id}`;
+      } else {
+          endpoint = `https://api.jikan.moe/v4/anime?producers=${id}`;
+      }
+      
+      mainTitle.textContent = studioNames[id];
+      getGhibliWorks(endpoint);
+    }
+
+    const getGhibliWorks = async (endpoint) => {
+      const url = endpoint || 'https://api.jikan.moe/v4/anime?producers=21';
+      
+      
+      const response = await fetch(url); 
       const animeData = await response.json();
+
+      contents.innerHTML = '';
 
       const ghibliWorks = animeData.data;
 
-      for(var i = 0; i < 12; i++){
+      for(var i = 0; i < 60; i++){
         const anime = ghibliWorks[i]; 
 
         const malID = anime.mal_id; 
@@ -44,13 +87,13 @@
         const imageUrl = anime.images.jpg.image_url; 
 
         contents.innerHTML += `
-          <div class="col-12 col-md-6 col-lg-4">
-            <div class="card my-3 shadow p-5 rounded-5 text-center">
+          <div class="col-12 col-md-6 col-lg-3">
+            <div class="card my-3 shadow p-3 rounded-5 text-center h-100">
               <div class="mx-auto rounded-circle card-img-top-container" style="background-color: #DEFDE0;">
                 <img src="${imageUrl}" class="w-100" alt="${title} Poster">
               </div>
-              <div class="my-3 h4">
-                #${malID} ${title}
+              <div class="my-3 h6">
+                <strong>#${malID} ${title}</strong>
               </div>
             </div>
           </div>
@@ -58,7 +101,8 @@
       }
     }
 
-    getGhibliWorks();
+    // CRITICAL FIX 7: Call with the default endpoint parameter to avoid 'undefined' error.
+    getGhibliWorks('https://api.jikan.moe/v4/anime?producers=21'); 
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
