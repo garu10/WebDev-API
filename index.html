@@ -8,8 +8,55 @@
     integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 
-<body>
-  <div class="container mb-4 bg-dark text-white p-4 rounded-5 text-center">
+<body data-bs-theme="dark">
+<div class="container-fluid p-0 top-0 fixed-top">
+    <div class="row g-0">
+        <div class="col-12 text-light">
+            <nav class="navbar navbar-expand-lg p-4">
+                <div class="container flex-lg-column align-items-lg-center">
+                    <button
+                        class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-center" id="navbarNavDropdown">
+                        <ul class="navbar-nav nav-underline nav-menu">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Studios</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Works</a>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid p-0 top-0 mt-0"> 
+    
+    <div class="row">
+        <div class="col">
+            <img src="assets/images/🅆🄰🄻🄻🄿🄰🄿🄴🅁_🄲🄷🄸🄷🄸🅁🄾 (2001).jpeg" class="img-fluid w-100" style="height:auto; object-fit:cover; mask-image: linear-gradient(180deg, black 30%, transparent 100%); ">
+            <div class="position-absolute bottom-0 start-50 translate-middle-x w-75 h-50">
+                <div class="container">
+                    <div class="row">
+                        <div class="col text-light">
+                            <h1 class="display-5 fw-bold" style="font-size: 60px;"><span>Well Known</span><br> <span>Japanese Animation</span><br> Studio and Their Popular Works</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+  <!-- <div class="container mb-4 bg-dark text-white p-4 rounded-5 text-center">
     <div class="row">
       <div class="col">
         <div class="display-3" id="main-title">
@@ -33,6 +80,11 @@
         <div class="col" id="btn-toei">
             <div class="btn-secondary" onclick="getEndpointfilter(18)">
                 TOEI
+            </div>
+        </div>
+        <div class="col" id="btn-toei">
+            <div class="btn-secondary" onclick="getEndpointfilter(56)">
+                A1 Pictures
             </div>
         </div>
     </div>
@@ -69,7 +121,7 @@
     }
 
     const getGhibliWorks = async (endpoint) => {
-      const url = endpoint || 'https://api.jikan.moe/v4/anime?producers=21';
+      const url = endpoint || 'https://api.jikan.moe/v4/anime?producers=56';
       
       
       const response = await fetch(url); 
@@ -102,7 +154,7 @@
     }
 
     // CRITICAL FIX 7: Call with the default endpoint parameter to avoid 'undefined' error.
-    getGhibliWorks('https://api.jikan.moe/v4/anime?producers=21'); 
+    getGhibliWorks('https://api.jikan.moe/v4/anime?producers=21');  -->
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
