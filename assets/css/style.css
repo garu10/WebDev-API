@@ -1,0 +1,9 @@
+/* style.css */
+
+/* This applies the font to the entire document */
+body {
+    font-family: 'Anton', sans-serif;
+    background-color: #111; /* Dark background for contrast */
+}
+
+/* This applies the font specifically to headings */
