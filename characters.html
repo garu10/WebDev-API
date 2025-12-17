@@ -132,11 +132,27 @@
             var itemsPerPage = 8; 
             var currentVision = "Anemo";
 
+            // 1. Color mapping for the element glow
+            const visionColors = {
+                Anemo: "#4dffdb", // Teal
+                Geo: "#ffcc33",   // Gold
+                Electro: "#b366ff", // Purple
+                Dendro: "#80ff00",  // Green
+                Hydro: "#3399ff",   // Blue
+                Pyro: "#ff4d4d",    // Red
+                Cryo: "#99ffff"     // Light Blue
+            };
+
             const getCharacters = async (clickedVision, page = 1) => {
                 const response = await fetch('https://genshin.jmp.blue/characters');
                 const characterNames = await response.json();
 
-                contents.innerHTML = '<div class="col-12 text-center py-5"><div class="spinner-border text-info"></div><p class="mt-2">Loading Characters...</p></div>';
+                contents.innerHTML = `
+                <div class="col-12 text-center py-5">
+                    <div class="spinner-border text-info">
+                    </div>
+                    <p class="mt-2 text-white">Loading Characters...</p>
+                </div>`;
                 
                 if (clickedVision == null) {
                     var target = currentVision;
@@ -153,21 +169,16 @@
                     const detailResponse = await fetch('https://genshin.jmp.blue/characters/' + name);
                     const characterDetails = await detailResponse.json();
 
-                    const vision = characterDetails.vision;
-                    const weapon = characterDetails.weapon;
-
-                    // collecting characters before display (logic from D15--push())
-                    if (vision === target) {
+                    if (characterDetails.vision === target) {
                         matchedCharacters.push({
                             name: name,
-                            vision: vision,
-                            weapon: weapon,
+                            vision: characterDetails.vision,
+                            weapon: characterDetails.weapon,
                             image: "https://genshin.jmp.blue/characters/" + name + "/icon"
                         });
                     }
                 }
 
-                // pagination 
                 contents.innerHTML = "";
                 var totalPages = Math.ceil(matchedCharacters.length / itemsPerPage);
                 var start = (currentPage - 1) * itemsPerPage;
@@ -176,14 +187,18 @@
 
                 for (var j = 0; j < paginatedList.length; j++) {
                     var char = paginatedList[j];
+                    
+                    var glowColor = visionColors[char.vision] || "#ffffff";
+
                     contents.innerHTML += `
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="card shadow h-100 bg-dark text-white border-secondary">
-                                <div class="ratio ratio-1x1 bg-secondary bg-opacity-25 overflow-hidden">
+                                <div class="ratio ratio-1x1 bg-secondary bg-opacity-25 overflow-hidden" 
+                                    style="background: radial-gradient(circle, ` + glowColor + `33 0%, transparent 100%);">
                                     <img src="` + char.image + `" class="card-img-top w-100 h-100 object-fit-cover">
                                 </div>
                                 <div class="card-body">
-                                    <h5 class="card-title fw-bold text-capitalize">` + char.name + `</h5>
+                                    <h5 class="card-title fw-bold text-capitalize" style="color: ` + glowColor + `;">` + char.name + `</h5>
                                     <p class="card-text small mb-1">Vision: <strong>` + char.vision + `</strong></p>
                                     <p class="card-text small">Weapon: <strong>` + char.weapon + `</strong></p>
                                 </div>
@@ -193,7 +208,7 @@
                 }
                 renderPagination(totalPages);
             }
-            // page numbers
+
             const renderPagination = (totalPages) => {
                 paginationControls.innerHTML = "";
                 for (let i = 1; i <= totalPages; i++) {
