@@ -12,10 +12,15 @@
     </head>
 
     <body class="bg-dark text-light">
-        
-        <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;">
-            <img src="assets/images/genshin/characterBanner.jpg" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.4;">
-            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, transparent, #212529);"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;">
+                        <img src="assets/images/genshin/characterBanner.jpg" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.4;">
+                        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, transparent, #212529);"></div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="container-fluid p-0">
@@ -104,21 +109,19 @@
             var itemsPerPage = 4; 
             var allBossNames = [];
 
+            // fetch weekly boss data from genshin impact api
             const getBoss = async (page = 1) => {
                 currentPage = page;
-                contents.innerHTML = '<div class="col-12 text-center text-info p-5"><h3>Locating Bosses...</h3></div>';
-                
-                if (allBossNames.length === 0) {
-                    const response = await fetch('https://genshin.jmp.blue/boss/weekly-boss/');
-                    allBossNames = await response.json();
-                }
+                const response = await fetch('https://genshin.jmp.blue/boss/weekly-boss/');
+                allBossNames = await response.json();
 
+                // logic for pagination
+                contents.innerHTML = ""; 
                 const totalPages = Math.ceil(allBossNames.length / itemsPerPage);
                 const start = (page - 1) * itemsPerPage;
                 const end = start + itemsPerPage;
                 const paginatedNames = allBossNames.slice(start, end);
 
-                contents.innerHTML = ""; 
 
                 for (var i = 0; i < paginatedNames.length; i++){
                     const bossName = paginatedNames[i];
@@ -141,9 +144,9 @@
                                     <img src=`+image+` class="card-img-top w-100 h-100 object-fit-cover">
                                 </div>
                                 <div class="card-body">
-                                    <h5 class="card-title fw-bold">`+bossName+`</h5>
-                                    <p class="card-text">Drops: <strong>`+droplist+`</strong></p>
-                                    <p class="card-text">Artifacts: <strong>`+artifactlist+`</strong></p>
+                                    <h5 class="card-title fw-bold text-capitalize">`+bossName+`</h5>
+                                    <p class="card-text"><strong>Drops: </strong>`+droplist+`</p>
+                                    <p class="card-text"><strong>Artifacts: </strong>`+artifactlist+`</p>
                                 </div>
                             </div>
                         </div>
@@ -151,6 +154,7 @@
                 }
                 renderPagination(totalPages);
             }
+            // displaying pagination numbers
             const renderPagination = (totalPages) => {
                 paginationControls.innerHTML = "";
 
